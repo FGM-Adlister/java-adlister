@@ -2,7 +2,6 @@ package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
-
 import java.sql.*;
 
 public class MySQLUsersDao implements Users {
@@ -21,46 +20,37 @@ public class MySQLUsersDao implements Users {
         }
     }
 
-
     @Override
     public User findByUsername(String username) {
-        String query = "SELECT * FROM users WHERE username = ? LIMIT 1";
+        User user = new User();
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, username);
-            return extractUser(stmt.executeQuery());
+            PreparedStatement stmt = connection.prepareStatement(String.format("SELECT username, email, id, password FROM users WHERE username = '%s'", username));
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding a user by username", e);
+            e.printStackTrace();
         }
+        return user;
     }
 
     @Override
     public Long insert(User user) {
-        String query = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
+        Long next = null;
         try {
-            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO users(username, email, password) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            return rs.getLong(1);
+            next = rs.getLong(1);
         } catch (SQLException e) {
-            throw new RuntimeException("Error creating new user", e);
+            e.printStackTrace();
         }
+        return next;
     }
-
-    private User extractUser(ResultSet rs) throws SQLException {
-        if (! rs.next()) {
-            return null;
-        }
-        return new User(
-                rs.getLong("id"),
-                rs.getString("username"),
-                rs.getString("email"),
-                rs.getString("password")
-        );
-    }
-
-}
