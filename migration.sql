@@ -2,6 +2,7 @@ USE adlister_db;
 
 DROP TABLE IF EXISTS ads;
 DROP TABLE IF EXISTS users;
+Drop table if exists comments;
 
 CREATE TABLE users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -19,4 +20,10 @@ CREATE TABLE ads (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE
+);
+
+create table comments (
+    username varchar(240) not null,
+    comment text not null,
+    primary key(username)
 );
