@@ -22,19 +22,17 @@ public class MySQLUsersDao implements Users {
 
     @Override
     public User findByUsername(String username) {
-        User user = new User();
+
         try {
-            PreparedStatement stmt = connection.prepareStatement(String.format("SELECT username, email, id, password FROM users WHERE username = '%s'", username));
+            PreparedStatement stmt = connection.prepareStatement("SELECT username, email, id, password FROM users WHERE username = ?");
+            stmt.setString(1,username);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            user.setId(rs.getLong("id"));
-            user.setUsername(rs.getString("username"));
-            user.setEmail(rs.getString("email"));
-            user.setPassword(rs.getString("password"));
-        } catch (SQLException e) {
-            e.printStackTrace();
+                    User user = new User(rs.getLong("id"),rs.getString("username"),rs.getString("email"),rs.getString("password"));
+            return user;
+        } catch (SQLException e)  {
+            throw new RuntimeException("Error logging in",e);
         }
-        return user;
     }
 
     @Override
