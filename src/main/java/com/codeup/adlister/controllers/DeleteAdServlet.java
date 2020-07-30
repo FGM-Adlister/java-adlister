@@ -17,10 +17,7 @@ public class DeleteAdServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user.getAdmin()){
-            response.sendRedirect("/admin");
-            return;
-        }
+
         response.sendRedirect("/profile");
     }
 }

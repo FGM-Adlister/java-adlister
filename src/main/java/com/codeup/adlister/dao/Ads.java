@@ -1,3 +1,4 @@
+
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
@@ -10,5 +11,8 @@ public interface Ads {
     // insert a new ad and return the new ad's id
     Long insert(Ad ad);
 
+
     Ad deleteAd(Long id);
 }
+
+

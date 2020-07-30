@@ -25,6 +25,13 @@ public class User {
         this.admin = admin;
     }
 
+    public User(long id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     public long getId() {
         return id;
     }
@@ -57,7 +64,9 @@ public class User {
         this.password = Password.hash(password);
     }
 
+
     public Boolean getAdmin() {
         return admin;
     }
 }
+
