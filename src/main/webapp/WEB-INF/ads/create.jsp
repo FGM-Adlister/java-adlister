@@ -5,10 +5,22 @@
         <jsp:param name="title" value="Create a new Ad" />
     </jsp:include>
 </head>
+<nav class="navbar navbar-default">
+    <div>
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/" >Home</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 <body>
     <div class="container">
         <h1>Create a new Ad</h1>
-        <form action="/ads/create" method="post">
+        <form action="/ads/create" method="POST">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input id="title" name="title" class="form-control" type="text">
